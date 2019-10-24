@@ -7,4 +7,4 @@ app.get('/timestamp',(request,response)=>{
     response.send(`${Date.now()}`);
 })
 
-exports.helloWorld = functions.https.onRequest(app)
+exports.app = functions.https.onRequest(app)
