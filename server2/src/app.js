@@ -2,9 +2,10 @@ const express=require('express')
 const path=require('path')
 const firebase=require('firebase')
 const bodyParser= require('body-parser')
+
 const app = express()
 const firebaseapp = firebase.initializeApp({ 
-apiKey: 'AIzaSyDzZ3EvtGsdX8yGpv7ySn0w2OS2Ov5-JuU',
+apiKey: '',
 //authDomain: '<your-auth-domain>',
 //databaseURL: '<your-database-url>',
 projectId: 'fullstackdeviiproject-f8413',
@@ -22,6 +23,10 @@ app.get('',(req,res)=>{
     
     res.render('index')    
 })
+app.post('/signup',(req,res)=>{
+    
+    res.render('index')    
+})
 app.get('/about',(req,res)=>{
     res.render('about')
 })
@@ -30,6 +35,7 @@ app.get('/profile',(req,res)=>{
     { firstname: 'Mike',
       lastname: 'Snow',
       username: 'mikey455',
+      //userimg: '',
       email: 'abcd@gmail.com', 
       imgcount: '10',
       userSince: '01/13/2019'
