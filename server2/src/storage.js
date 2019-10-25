@@ -13,14 +13,14 @@ exports.adduserBucket= function adduserBucket(userName){
     console.log("Log: Bucket creation success");
   })
   .catch(err => {
-    console.error('Error:', err);
+    console.error('Error: Bucket creation failure', err);
   });
 }
 
-exports.adduserProfilePic=async function adduserProfilePic(userName, pic){
-  if(pic.charAt(pic.length-1)=='/')
-     pic[pic.length-1]=' '
-  await gcs.bucket(default_userImg).upload(pic,{
+exports.adduserProfilePic=async function adduserProfilePic(userName, filename){
+  if(filename.charAt(filename.length-1)=='/')
+     filename[filename.length-1]=' '
+  await gcs.bucket(default_userImg).upload(filename,{
     gzip: true,
     metadata:{
        cacheControl: 'public, max-age=31536000'
@@ -33,7 +33,7 @@ exports.adduserProfilePic=async function adduserProfilePic(userName, pic){
   } 
   )
 
-  let names=pic.split('/')
+  let names=filename.split('/')
   let name=names[names.length-1]
    
   await gcs.bucket(default_userImg).file(name).move(userName).then(()=>{
@@ -43,9 +43,9 @@ exports.adduserProfilePic=async function adduserProfilePic(userName, pic){
   })
   
 }
-exports.addUserImages=async function addUserImage(username,filename){
-  if(pic.charAt(pic.length-1)=='/')
-  pic[pic.length-1]=' '
+exports.addUserImage=async function addUserImage(username,filename){
+  if(filename.charAt(filename.length-1)=='/')
+  filename[filename.length-1]=' '
   let bucketName= default_imageCloud+ userName
   await gcs.bucket(bucketName).upload(filename,{
     gzip: true,
@@ -76,8 +76,34 @@ exports.deleteImageFile=async function deleteImageFile(userName,fileName){
     await gcs.bucket(bucketName).file(fileName).delete().then(()=>{
        console.log("Log: File deletion sucess")
     }).catch(err=>{
-         console.error(`Error: Cannot remove file ${fileName}`,err)
+         console.error('Error: Cannot remove file',err)
     })
 }
-// this.adduserBucket('Pratik')
-// this.deleteUserStorage('Pratik')
+exports.getImageFile=async function getImageFile(userName, fileName){
+  let bucketName= default_imageCloud + userName
+  await gcs.bucket(bucketName).file(fileName).download({
+    destination: "../user_data/" + fileName,
+  }).then(()=>{
+     console.log("Log: File download success")
+  }).catch(err=>{
+     console.error('Error: Cannot download file',err)
+  })
+}
+exports.getImageList=async function(username){
+  let bucketName= default_imageCloud + username
+  let files = await gcs.bucket(bucketName).getFiles()
+  return files
+}
+exports.getImageCount=async function(username){
+  let files= await this.getImageList(username)
+  return files.count
+}
+/*
+ this.adduserBucket('Pratik')
+ this.adduserProfilePic('Pratik',"../user.jpg")
+ this.addUserImage('Pratik',"../1.jpg")
+ this.getImageFile('Pratik','1.jpg')
+ this.deleteImageFile('Pratik','1.jpg')
+ this.deleteUserStorage('Pratik') 
+ */
+ 
