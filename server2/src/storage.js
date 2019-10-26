@@ -1,12 +1,19 @@
 'use strict'
 const {Storage}=require('@google-cloud/storage')
+const {google} = require('googleapis')
+const oauth2Client =new google.auth.OAuth2(
+  '487348274649-ohk1r76kso3c2j81e0la5q2urs4mo8k4.apps.googleusercontent.com',
+  ''
+)
 const gcs= new Storage({
     projectId: 'fullstackdeviiproject-f8413',
+    apiKey: 'AIzaSyAjzVXTW6CNfvEKUXw3C_r84vv9QtJgU9Y',
+    auth: oauth2Client,
 })
 const default_imageCloud= 'gs://fullstackdeviiproject-f8413.appspot.com/imageCloud/'
 const default_userImg='gs://fullstackdeviiproject-f8413.appspot.com/userImages/'
 
-exports.adduserBucket= function adduserBucket(userName){
+/*exports.adduserBucket= function adduserBucket(userName){
    let bucketName= default_imageCloud+ userName
    gcs.createBucket(bucketName)
   .then(() => {
@@ -98,12 +105,16 @@ exports.getImageCount=async function(username){
   let files= await this.getImageList(username)
   return files.count
 }
-/*
+try{
  this.adduserBucket('Pratik')
- this.adduserProfilePic('Pratik',"../user.jpg")
+ /*this.adduserProfilePic('Pratik',"../user.jpg")
  this.addUserImage('Pratik',"../1.jpg")
  this.getImageFile('Pratik','1.jpg')
  this.deleteImageFile('Pratik','1.jpg')
  this.deleteUserStorage('Pratik') 
  */
+}
+catch(err){
+  console.log(err)
+}
  

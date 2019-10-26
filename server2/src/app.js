@@ -5,7 +5,7 @@ const bodyParser= require('body-parser')
 
 const app = express()
 const firebaseapp = firebase.initializeApp({ 
-apiKey: '',
+apiKey: 'AIzaSyDzZ3EvtGsdX8yGpv7ySn0w2OS2Ov5-JuU',
 //authDomain: '<your-auth-domain>',
 //databaseURL: '<your-database-url>',
 projectId: 'fullstackdeviiproject-f8413',
