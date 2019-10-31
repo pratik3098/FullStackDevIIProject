@@ -3,71 +3,42 @@ const path=require('path')
 const gcs= new Storage({
     projectId: 'fullstackdeviiproject-f8413',
     keyFilename: '../../../serviceKey.json'
-})
-//const default_imageCloud= 'gs://fullstackdeviiproject-f8413.appspot.com/imageCloud/'
-//const default_userImg='gs://fullstackdeviiproject-f8413.appspot.com/userImages/'
-const default_imageCloud= 'imageCloud/'
+}).bucket('gs://fullstackdeviiproject-f8413.appspot.com')
+
+
+const default_imageCloud= 'imageCloud'
 const default_userImg='userImages'
 
-async function getBuckets(){
-  try{
-    const [metadata] = await gcs.bucket("gs://fullstackdeviiproject-f8413.appspot.com").getMetadata();
-
-  for (const [key, value] of Object.entries(metadata)) {
-    console.log(`${key}: ${value}`);
-  }
-  }
-  catch(err){
-    console.error(err)
-  }
-}
-
-exports.adduserBucket= function adduserBucket(username){
-   username=username.toLowerCase()
-   let bucketName= "/imageCloud/"+username//default_imageCloud
-   gcs.createBucket(bucketName)
-  .then(() => {
-    console.log("Log: Bucket creation success");
-  })
-  .catch(err => {
-    console.error('Error: Bucket creation failure', err);
-  });
-}
 exports.adduserProfilePic=async function adduserProfilePic(username, filename){
   username=username.toLowerCase()
   filename=filename.toLowerCase()
-  file
-  if(filename.charAt(filename.length-1)=='/')
-     filename[filename.length-1]=' '
+  filename=filename.split('/')
+  filename=filename[filename.length-1]
+  filepath=path.join(__dirname,`../user_data/${default_userImg}/${username}/${filename}`)
+
   try{
-   await gcs.bucket(default_userImg).upload(filename,{
+   await gcs.upload(filepath,{
+    destination: `${default_userImg}/${username}/${filename}`,
     gzip: true,
     metadata:{
        cacheControl: 'public, max-age=31536000'
     },
-  }
-  )
-  console.log("Log: File upload success")
+  })
+    console.log("Log: File upload success") 
   } catch(err){
     console.error('Error: Cannot upload file', err)
   } 
-  let names=filename.split('/')
-  let name=names[names.length-1]
-   
-  await gcs.bucket(default_userImg).file(name).move(username).then(()=>{
-    console.log("Log: File rename success")
-  }).catch(err=>{
-    console.error('Error: Cannot rename file', err)
-  })
   
 }
-exports.addUserImage=async function addUserImage(username,filename){
+exports.addImagebyUser=async function addImagebyUser(username,filename){
   username=username.toLowerCase()
   filename=filename.toLowerCase()
-  if(filename.charAt(filename.length-1)=='/')
-  filename[filename.length-1]=' '
-  let bucketName= default_imageCloud+ username
-  await gcs.bucket().upload(path.join(__dirname,filename),{
+  filename=filename.split('/')
+  filename=filename[filename.length-1]
+  filepath=path.join(__dirname,`../userdata/${default_imageCloud}/${username}/${filename}`)
+
+  await gcs.upload(filepath,{
+    destination: `${default_imageCloud}/${username}/${filename}`,
     gzip: true,
     metadata:{
        cacheControl: 'public, max-age=31536000'
@@ -78,16 +49,17 @@ exports.addUserImage=async function addUserImage(username,filename){
     console.error('Error: Cannot upload file',err)
   })
 }
+
 exports.deleteUserStorage=async function deleteUserStorage(username){
     username=username.toLowerCase()
+    filepath=`${default_imageCloud}/${username}`
   
-    let bucketName= default_imageCloud+ username
-    await gcs.bucket(bucketName).delete().then(()=>{
+    await gcs.delete().then(()=>{
       console.log("Log: File deletion sucess")
     }).catch(err => {
         console.error('Error: Cannot delete file',err)
     })
-    await gcs.bucket(default_userImg).file(username).then(()=>{
+    await gcs.file(username).then(()=>{
       console.log("Log: File deletion sucess")
     }).delete().catch(err=>{
         console.error(`Error: Cannot remove file ${username}`,err)
@@ -127,8 +99,7 @@ exports.getImageCount=async function(username){
   return files.count
 } 
 try{
-// /*this.adduserBucket('Pratik')
- //this.adduserProfilePic('Pratik','../user_data/user.png')
+ //this.adduserProfilePic('Pratik','user.png').catch(err=>{ console.error(err) })  //-- Working fine
  //this.addUserImage('Pratik',"../1.jpg")
 // this.getImageFile('Pratik','1.jpg')
  //this.deleteImageFile('Pratik','1.jpg')
@@ -139,5 +110,3 @@ try{
 catch(err){
   console.log(err)
 }
-
-console.log(path.join(__dirname,"../user_data/"))
