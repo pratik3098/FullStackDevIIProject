@@ -1,4 +1,5 @@
 const {Storage}=require('@google-cloud/storage')
+const path=require('path')
 const gcs= new Storage({
     projectId: 'fullstackdeviiproject-f8413',
     keyFilename: '../../../serviceKey.json'
@@ -23,7 +24,7 @@ async function getBuckets(){
 
 exports.adduserBucket= function adduserBucket(username){
    username=username.toLowerCase()
-   let bucketName= "imagecloud/"+username//default_imageCloud
+   let bucketName= "/imageCloud/"+username//default_imageCloud
    gcs.createBucket(bucketName)
   .then(() => {
     console.log("Log: Bucket creation success");
@@ -66,7 +67,7 @@ exports.addUserImage=async function addUserImage(username,filename){
   if(filename.charAt(filename.length-1)=='/')
   filename[filename.length-1]=' '
   let bucketName= default_imageCloud+ username
-  await gcs.bucket(bucketName).upload(filename,{
+  await gcs.bucket().upload(path.join(__dirname,filename),{
     gzip: true,
     metadata:{
        cacheControl: 'public, max-age=31536000'
@@ -126,15 +127,17 @@ exports.getImageCount=async function(username){
   return files.count
 } 
 try{
- //this.adduserBucket('Pratik')
- this.adduserProfilePic('Pratik','../user_data/user.png')
- /*this.addUserImage('Pratik',"../1.jpg")
- this.getImageFile('Pratik','1.jpg')
- this.deleteImageFile('Pratik','1.jpg')
- this.deleteUserStorage('Pratik') 
- */
+// /*this.adduserBucket('Pratik')
+ //this.adduserProfilePic('Pratik','../user_data/user.png')
+ //this.addUserImage('Pratik',"../1.jpg")
+// this.getImageFile('Pratik','1.jpg')
+ //this.deleteImageFile('Pratik','1.jpg')
+ //this.deleteUserStorage('Pratik') 
+ 
 
 }
 catch(err){
   console.log(err)
 }
+
+console.log(path.join(__dirname,"../user_data/"))
