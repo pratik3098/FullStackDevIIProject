@@ -12,9 +12,8 @@ const default_userImg='userImages'
 exports.adduserProfilePic=async function adduserProfilePic(username, filename){
   username=username.toLowerCase()
   filename=filename.toLowerCase()
-  filename=filename.split('/')
-  filename=filename[filename.length-1]
-  filepath=path.join(__dirname,`../user_data/${default_userImg}/${username}/${filename}`)
+  filename=path.basename(filename)
+  filepath=path.resolve(__dirname,`../user_data/${default_userImg}/${username}/${filename}`)
 
   try{
    await gcs.upload(filepath,{
@@ -33,9 +32,8 @@ exports.adduserProfilePic=async function adduserProfilePic(username, filename){
 exports.addImagebyUser=async function addImagebyUser(username,filename){
   username=username.toLowerCase()
   filename=filename.toLowerCase()
-  filename=filename.split('/')
-  filename=filename[filename.length-1]
-  filepath=path.join(__dirname,`../userdata/${default_imageCloud}/${username}/${filename}`)
+  filename=path.basename(filename)
+  filepath=path.resolve(__dirname,`../user_data/${default_imageCloud}/${username}/${filename}`)
 
   await gcs.upload(filepath,{
     destination: `${default_imageCloud}/${username}/${filename}`,
@@ -68,10 +66,9 @@ exports.deleteUserStorage=async function deleteUserStorage(username){
 }
 exports.deleteImageFile=async function deleteImageFile(username,filename){
     username=username.toLowerCase()
-    filename=filename.split('/')
-    filename=filename[filename.length-1]
+    filename=path.basename(filename)
     filename=filename.toLowerCase()
-
+    filename=`${default_imageCloud}/${username}/${filename}`
     await gcs.file(filename).delete().then(()=>{
        console.log('Log: '+filename+' deletion sucess')
     }).catch(err=>{
@@ -82,9 +79,11 @@ exports.deleteImageFile=async function deleteImageFile(username,filename){
 exports.getImageFile=async function getImageFile(username, filename){
   username=username.toLowerCase()
   filename=filename.toLowerCase()
-  let bucketName= default_imageCloud + username
-  await gcs.bucket(bucketName).file(filename).download({
-    destination: "../user_data/" + filename,
+  filename=path.basename(filename)
+  filepath=path.resolve(__dirname,`../user_data/${default_imageCloud}/${username}/${filename}`)
+  await gcs.file(`${default_imageCloud}/${username}/${filename}`).download({
+    destination: filepath,
+    validation: false
   }).then(()=>{
      console.log("Log: File download success")
   }).catch(err=>{
@@ -93,23 +92,24 @@ exports.getImageFile=async function getImageFile(username, filename){
 }
 exports.getImageList=async function(username){
   username=username.toLowerCase()
-  let files = await gcs.getFiles()
-  //return files
+  let files = await gcs.getFiles({prefix: `${default_imageCloud}/${username}}`})
   console.log(files)
+  return files
+  
 }
 exports.getImageCount=async function(username){
   username=username.toLowerCase()
   let files= await this.getImageList(username)
-  return files.count
+  console.log( "Count: " +files.length)
 } 
 try{
  //this.adduserProfilePic('Pratik','user.png').catch(err=>{ console.error(err) })  //-- Working fine
- //this.addUserImage('Pratik',"../1.jpg")
-// this.getImageFile('Pratik','1.jpg')
- //this.deleteImageFile('Pratik','1.jpg')
- this.deleteUserStorage('Pratik').catch(err=>{ console.error(err) })
-// this.getImageList('Pratik').catch(err=>{ console.error(err) })
-
+ //this.addImagebyUser('Pratik',"../user.png") //--Working fine
+ //this.deleteImageFile('Pratik','1.jpg').catch(err=>{ console.error(err) }) //-- Working fine
+ //this.deleteUserStorage('Pratik').catch(err=>{ console.error(err) }) //--Working fine
+ //this.getImageFile('Pratik','1.jpg').catch(err=>{ console.error(err) }) // -- Working fine
+ //this.getImageList('Pratik').catch(err=>{ console.error(err) })
+ //this.getImageCount('Pratik').catch(err=>{ console.error(err) }) // --Working fine
 }
 catch(err){
   console.log(err)
