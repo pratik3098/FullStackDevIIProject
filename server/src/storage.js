@@ -52,28 +52,32 @@ exports.addImagebyUser=async function addImagebyUser(username,filename){
 
 exports.deleteUserStorage=async function deleteUserStorage(username){
     username=username.toLowerCase()
-    filepath=`${default_imageCloud}/${username}`
-  
-    await gcs.delete().then(()=>{
-      console.log("Log: File deletion sucess")
+    let userProfile=`${default_userImg}/${username}.jpg`
+    await gcs.deleteFiles({prefix: `${default_imageCloud}/${username}/`}).then(()=>{
+      console.log('Log: '+username+' bucket deletion sucess')
     }).catch(err => {
-        console.error('Error: Cannot delete file',err)
+        console.error('Error: Cannot delete user bucket',err)
     })
-    await gcs.file(username).then(()=>{
-      console.log("Log: File deletion sucess")
-    }).delete().catch(err=>{
-        console.error(`Error: Cannot remove file ${username}`,err)
-    })   
+   await gcs.file(userProfile).delete().then(()=>{
+      console.log("Log: User Image deletion sucess")
+    }).catch(err => {
+        console.error('Error: Cannot delete user image',err)
+    }) 
+  
+
 }
 exports.deleteImageFile=async function deleteImageFile(username,filename){
     username=username.toLowerCase()
+    filename=filename.split('/')
+    filename=filename[filename.length-1]
     filename=filename.toLowerCase()
-    let bucketName= default_imageCloud+ username
-    await gcs.bucket(bucketName).file(filename).delete().then(()=>{
-       console.log("Log: File deletion sucess")
+
+    await gcs.file(filename).delete().then(()=>{
+       console.log('Log: '+filename+' deletion sucess')
     }).catch(err=>{
-         console.error('Error: Cannot remove file',err)
+         console.error('Error: Cannot remove '+filename,err)
     })
+    
 }
 exports.getImageFile=async function getImageFile(username, filename){
   username=username.toLowerCase()
@@ -89,9 +93,9 @@ exports.getImageFile=async function getImageFile(username, filename){
 }
 exports.getImageList=async function(username){
   username=username.toLowerCase()
-  let bucketName= default_imageCloud + username
-  let files = await gcs.bucket(bucketName).getFiles()
-  return files
+  let files = await gcs.getFiles()
+  //return files
+  console.log(files)
 }
 exports.getImageCount=async function(username){
   username=username.toLowerCase()
@@ -103,8 +107,8 @@ try{
  //this.addUserImage('Pratik',"../1.jpg")
 // this.getImageFile('Pratik','1.jpg')
  //this.deleteImageFile('Pratik','1.jpg')
- //this.deleteUserStorage('Pratik') 
- 
+ this.deleteUserStorage('Pratik').catch(err=>{ console.error(err) })
+// this.getImageList('Pratik').catch(err=>{ console.error(err) })
 
 }
 catch(err){
