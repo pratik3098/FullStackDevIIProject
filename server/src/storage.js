@@ -102,15 +102,3 @@ exports.getImageCount=async function(username){
   let files= await this.getImageList(username)
   console.log( "Count: " +files.length)
 } 
-try{
- //this.adduserProfilePic('Pratik','user.png').catch(err=>{ console.error(err) })  //-- Working fine
- //this.addImagebyUser('Pratik',"../user.png") //--Working fine
- //this.deleteImageFile('Pratik','1.jpg').catch(err=>{ console.error(err) }) //-- Working fine
- //this.deleteUserStorage('Pratik').catch(err=>{ console.error(err) }) //--Working fine
- //this.getImageFile('Pratik','1.jpg').catch(err=>{ console.error(err) }) // -- Working fine
- //this.getImageList('Pratik').catch(err=>{ console.error(err) })
- //this.getImageCount('Pratik').catch(err=>{ console.error(err) }) // --Working fine
-}
-catch(err){
-  console.log(err)
-}
