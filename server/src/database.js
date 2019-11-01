@@ -24,7 +24,3 @@ exports.getUserData=async function getUserData(userName)
     else 
     return res.data()
 }
-/*
-this.setUserData('john200',{ firstName: 'John', lastName: 'Snow'})  // -- Working fine
-Promise.resolve(this.getUserData('1')).then(value=>{console.log(value)}).catch(err=>{console.log(err)})  // --Working fine
-//*/

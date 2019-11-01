@@ -91,15 +91,37 @@ exports.getImageFile=async function getImageFile(username, filename){
      console.error('Error: Cannot download file',err)
   })
 }
-exports.getImageList=async function(username){
+exports.getImageList=async function getImageList(username){
   username=username.toLowerCase()
   let files = await gcs.getFiles({prefix: `${default_imageCloud}/${username}}`})
-  console.log(files)
+  //console.log(files)
   return files
   
 }
-exports.getImageCount=async function(username){
+exports.getImageCount=async function getImageCount(username){
   username=username.toLowerCase()
   let files= await this.getImageList(username)
-  console.log( "Count: " +files.length)
+  return files.length
 } 
+exports.getAllImageFiles=async function getAllImageFiles(userName){
+  userName=userName.toLowerCase()
+  let list= await this.getImageList(userName)
+  list.array.forEach(element => {
+    his.getImageFile(userName,element.name)
+  })
+}
+
+exports.getFileMetadata=async function getFileMetadata(userName){
+  userName=userName.toLowerCase()
+  console.log(userName)
+  let metadata= await gcs.getFiles({prefix: `${default_imageCloud}/${userName}`})
+ // for (const [key, value] of Object.entries(metadata)) {
+metadata.forEach(res=>{
+  console.log(res)
+})   
+ //console.log(`${key}: ${value}`)}
+}
+
+this.getFileMetadata('Pratik').catch(err=>{
+   console.error(err)
+})
