@@ -1,17 +1,10 @@
 const express=require('express')
 const path=require('path')
+const firebaseApp=require('./app')
 const firebase=require('firebase')
 const bodyParser= require('body-parser')
 const multer=require('multer')
 const app = express()
-const firebaseapp = firebase.initializeApp({ 
-apiKey: 'AIzaSyDzZ3EvtGsdX8yGpv7ySn0w2OS2Ov5-JuU',
-authDomain: '<your-auth-domain>',
-//databaseURL: '<your-database-url>',
-projectId: 'fullstackdeviiproject-f8413',
-//storageBucket: '<your-storage-bucket>',
-//messagingSenderId: '<your-sender-id>'
-})
 
 app.set('title','My Gallery')
 app.set('view engine','hbs')
@@ -24,13 +17,17 @@ app.get('',(req,res)=>{
     res.render('index')    
 })
 app.post('/register',(req,res)=>{
-    
-    res.render('index')    
+    try{
+    firebaseApp.registerUser(req.body.firstName,req.body.lastName,req.body.userName,req.body.email,req.body.password)
+    res.redirect('/gallery')
+    }catch(err){
+        res.render('register',{error: err.message})
+    } 
 })
 app.get('/about',(req,res)=>{
     res.render('about')
 })
-app.get('/profile',(req,res)=>{
+app.get('/gallery',(req,res)=>{
     res.render('profile',
     { firstname: 'Mike',
       lastname: 'Snow',
