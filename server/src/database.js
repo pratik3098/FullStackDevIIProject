@@ -10,7 +10,7 @@ exports.setUserData=function setUserData(userName,userData)
 {  
   userName=userName.toLowerCase()
   firestore.collection('users').doc(userName).set(userData).catch(err=>{
-      console.error(err)
+      throw err
   })
 }
 exports.getUserData=async function getUserData(userName)

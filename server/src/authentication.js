@@ -1,27 +1,30 @@
 'use strict'
-const admin=require('firebase-admin')
+//const admin=require('firebase-admin')
 const firebase=require('firebase')
 const path=require('path')
-admin.initializeApp({
+/*admin.initializeApp({
     credential: admin.credential.cert(path.resolve(__dirname,'../../../serviceKey.json')),
     authDomain: 'fullstackdeviiproject-f8413.web.app'
+})*/
+firebase.initializeApp({
+    authDomain: 'fullstackdeviiproject-f8413.web.app',
+    projectId: 'fullstackdeviiproject-f8413',
+    apiKey: 'AIzaSyDzZ3EvtGsdX8yGpv7ySn0w2OS2Ov5-JuU',
 })
-const auth=admin.auth()
-const provider=new firebase.auth.GoogleAuthProvider()
-provider.setCustomParameters({
+
+const auth=firebase.auth()
+//const provider=new firebase.auth.GoogleAuthProvider()
+/*provider.setCustomParameters({
     'login_hint': 'user@example.com'
-})
+}) */
 exports.emailSignUp=function emailSignUp(emailId,password){
     emailId=emailId.toLowerCase()
-    auth.createUser({
-        email: emailId,
-        password: password
-    }).then(function(res){
-   // auth.createUserWithEmailAndPassword(email, password).then(function(){
-        console.log(email+' signup successful')
+   auth.createUserWithEmailAndPassword(emailId,password).then(function(res){
+        console.log(emailId+' signup successful')
         console.log(res)
     }).catch(err=>{
         console.error('Error: '+err.code+' '+err.message)
+        throw (err)
     })
 }
 exports.getCurrentUser=function getCurrentUser(){
@@ -35,7 +38,7 @@ exports.signOut=function signOut(){
     auth.signOut().then(function(){
        console.log('User sign out successful ')
     }).catch(err=>{
-        console.error(err)
+        throw (err)
     })
 }
-this.emailSignUp('pratik3098@gmail.com','12345554444')
+

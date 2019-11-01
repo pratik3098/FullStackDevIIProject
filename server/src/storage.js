@@ -15,10 +15,11 @@ exports.adduserProfilePic=async function adduserProfilePic(username, filename){
   filename=filename.toLowerCase()
   filename=path.basename(filename)
   filepath=path.resolve(__dirname,`../user_data/${default_userImg}/${username}/${filename}`)
-
+  let ext=filepath.split('.')
+  filename=username+'.'+ext[ext.length-1]
   try{
    await gcs.upload(filepath,{
-    destination: `${default_userImg}/${username}/${filename}`,
+    destination: `${default_userImg}/${filename}`,
     gzip: true,
     metadata:{
        cacheControl: 'public, max-age=31536000'
@@ -26,8 +27,9 @@ exports.adduserProfilePic=async function adduserProfilePic(username, filename){
   })
     console.log("Log: File upload success") 
   } catch(err){
-    console.error('Error: Cannot upload file', err)
-  } 
+    console.error('Error: Cannot upload file')
+    throw err
+  }
   
 }
 exports.addImagebyUser=async function addImagebyUser(username,filename){
@@ -45,7 +47,8 @@ exports.addImagebyUser=async function addImagebyUser(username,filename){
   }).then(()=>{
     console.log("Log: File upload success")
   }).catch(err=>{
-    console.error('Error: Cannot upload file',err)
+    console.error('Error: Cannot upload file')
+    throw (err)
   })
 }
 
@@ -55,12 +58,14 @@ exports.deleteUserStorage=async function deleteUserStorage(username){
     await gcs.deleteFiles({prefix: `${default_imageCloud}/${username}/`}).then(()=>{
       console.log('Log: '+username+' bucket deletion sucess')
     }).catch(err => {
-        console.error('Error: Cannot delete user bucket',err)
+        console.error('Error: Cannot delete user bucket')
+        throw (err)
     })
    await gcs.file(userProfile).delete().then(()=>{
       console.log("Log: User Image deletion sucess")
     }).catch(err => {
-        console.error('Error: Cannot delete user image',err)
+        console.error('Error: Cannot delete user image')
+        throw (err)
     }) 
   
 
@@ -73,7 +78,8 @@ exports.deleteImageFile=async function deleteImageFile(username,filename){
     await gcs.file(filename).delete().then(()=>{
        console.log('Log: '+filename+' deletion sucess')
     }).catch(err=>{
-         console.error('Error: Cannot remove '+filename,err)
+         console.error('Error: Cannot remove '+filename)
+         throw (err)
     })
     
 }
@@ -88,7 +94,8 @@ exports.getImageFile=async function getImageFile(username, filename){
   }).then(()=>{
      console.log("Log: File download success")
   }).catch(err=>{
-     console.error('Error: Cannot download file',err)
+     console.error('Error: Cannot download file')
+     throw (err)
   })
 }
 exports.getImageList=async function getImageList(username){
@@ -125,6 +132,3 @@ exports.getFileMetadata=async function getFileMetadata(userName){
   console.log(var1[0])
 }
 
-this.getFileMetadata('Pratik').catch(err=>{
-   console.error(err)
-})
