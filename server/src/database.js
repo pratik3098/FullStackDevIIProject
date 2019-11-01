@@ -1,10 +1,30 @@
-const firebase=require['firebase']
-const database=firebase.database()
-database.enableLogging(true, true)
+const admin = require('firebase-admin')
+const path=require('path')
+admin.initializeApp({
+    credential: admin.credential.cert(path.resolve(__dirname,'../../../serviceKey.json')),
+    databaseURL: 'https://fullstackdeviiproject-f8413.firebaseio.com'
+})
+const firestore=admin.firestore()
 
-
-
-
-exports.refreshDatabase=function refreshDatabase(){
-    database.goOnline()
+exports.setUserData=function setUserData(userName,userData)
+{  
+  userName=userName.toLowerCase()
+  firestore.collection('users').doc(userName).set(userData).catch(err=>{
+      console.error(err)
+  })
 }
+exports.getUserData=async function getUserData(userName)
+{  
+    userName=userName.toLowerCase()
+    let res= await firestore.collection('users').doc(userName).get().catch(err=>{
+      console.error(err)
+  })
+    if(typeof res.data() === "undefined")
+      return null
+    else 
+    return res.data()
+}
+/*
+this.setUserData('john200',{ firstName: 'John', lastName: 'Snow'})  // -- Working fine
+Promise.resolve(this.getUserData('1')).then(value=>{console.log(value)}).catch(err=>{console.log(err)})  // --Working fine
+//*/
