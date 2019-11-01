@@ -121,7 +121,8 @@ exports.getFileMetadata=async function getFileMetadata(userName){
   //const arr = Array.from(Object.keys(metadata), k=>[`${k}`, metadata[k]]);
   //console.log(arr)
   let var1=Object.values(Object.values(metadata)[1])[4].name
-  console.log(var1)
+  var1=Object.values(Object.values(Object.values(Object.values(metadata))))
+  console.log(var1[0])
 }
 
 this.getFileMetadata('Pratik').catch(err=>{
