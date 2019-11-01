@@ -113,13 +113,15 @@ exports.getAllImageFiles=async function getAllImageFiles(userName){
 
 exports.getFileMetadata=async function getFileMetadata(userName){
   userName=userName.toLowerCase()
-  console.log(userName)
-  let metadata= await gcs.getFiles({prefix: `${default_imageCloud}/${userName}`})
- // for (const [key, value] of Object.entries(metadata)) {
-metadata.forEach(res=>{
-  console.log(res)
-})   
- //console.log(`${key}: ${value}`)}
+  let [metadata]= await gcs.getFiles({prefix: `${default_imageCloud}/${userName}/`})
+ 
+  /*for (const [key, value] of Object.entries(metadata)) {
+    console.log(`${key}: ${value}`);
+  }*/
+  //const arr = Array.from(Object.keys(metadata), k=>[`${k}`, metadata[k]]);
+  //console.log(arr)
+  let var1=Object.values(Object.values(metadata)[1])[4].name
+  console.log(var1)
 }
 
 this.getFileMetadata('Pratik').catch(err=>{
