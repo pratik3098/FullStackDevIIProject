@@ -1,8 +1,13 @@
 const path=require('path')
+const admin=require('firebase-admin')
+admin.initializeApp({
+  credential: admin.credential.cert(path.resolve(__dirname,'../../../serviceKey.json')),
+  databaseURL: 'https://fullstackdeviiproject-f8413.firebaseio.com',
+  authDomain: 'fullstackdeviiproject-f8413.web.app'
+})
 const auth=require('./authentication')
 const storage=require('./storage')
 const database=require('./database')
-
 exports.registerUser=function registerUser(firstName,lastName,userName,email,password){
   try{
    firstName=firstName.toLowerCase()

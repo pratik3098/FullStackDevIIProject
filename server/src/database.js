@@ -1,9 +1,9 @@
 const admin = require('firebase-admin')
 const path=require('path')
-admin.initializeApp({
+/*admin.initializeApp({
     credential: admin.credential.cert(path.resolve(__dirname,'../../../serviceKey.json')),
     databaseURL: 'https://fullstackdeviiproject-f8413.firebaseio.com'
-})
+}) */
 const firestore=admin.firestore()
 
 exports.setUserData=function setUserData(userName,userData)
@@ -34,9 +34,3 @@ exports.getUserData=async function getUserData(userName)
  else 
  return null
 }
-
-Promise.resolve(this.getUserData("pratik3098").then(res=>{
-    console.log(res)
-}).catch(err=>{
-  console.error(err)
-}))
