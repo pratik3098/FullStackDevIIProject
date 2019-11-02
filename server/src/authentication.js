@@ -6,10 +6,10 @@ firebase.initializeApp({
     authDomain: "fullstackdeviiproject-f8413.firebaseapp.com",
     projectId: "fullstackdeviiproject-f8413",
 })  
-admin.initializeApp({
+/*admin.initializeApp({
     credential: admin.credential.cert(path.resolve(__dirname,'../../../serviceKey.json')),
     authDomain: 'fullstackdeviiproject-f8413.web.app'
-})
+})*/
 const auth=admin.auth()
 const client=firebase.auth()
 
@@ -42,11 +42,10 @@ exports.emailSignIn=function emailSignIn(email,password){
 }
 
 exports.signOut=function signOut(){
-    auth.currentUser.signOut().then(function(){
-       console.log('User sign out successful ')
+    Promise.resolve(client.signOut()).then(function(res){
+       console.log('User sign out successful')
     }).catch(err=>{
         console.error(err)
     })
 }
 
-this.emailSignIn("pratik3098@gmail.com","123456")

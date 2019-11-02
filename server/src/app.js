@@ -41,4 +41,7 @@ exports.registerUser=function registerUser(firstName,lastName,userName,email,pas
 }
 }
 
+exports.signInUser=function signInUser(email,password){
+     auth.emailSignIn(email,password)
+}
 //this.registerUser("pratik","patil","pratik3099","pratik3099@gmail.com","12345dddd6")

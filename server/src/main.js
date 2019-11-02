@@ -18,7 +18,7 @@ app.get('/login',(req,res)=>{
 })
 app.post('/login',(req,res)=>{
     try{
-    firebaseApp.registerUser(req.body.firstname,req.body.lastname,req.body.username,req.body.email,req.body.password)
+    firebaseApp.signInUser(req.body.email,req.body.password)
     res.redirect('/gallery')
     }catch(err){
         res.render('register',{error: err.message})
