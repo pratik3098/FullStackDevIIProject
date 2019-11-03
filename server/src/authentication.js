@@ -49,3 +49,10 @@ exports.signOut=function signOut(){
     })
 }
 
+exports.sendResetEmail=function sendResetEmail(email){
+    Promise.resolve(auth.getUserByEmail(email)).then(user=>{
+        console.log(user)
+    }).then(Promise.resolve(client.sendPasswordResetEmail(email))).catch(err=>{
+        console.error(err)
+    })
+}

@@ -31,10 +31,21 @@ app.get('/register',(req,res)=>{
 app.post('/register',(req,res)=>{
     try{
     firebaseApp.registerUser(req.body.firstname,req.body.lastname,req.body.username,req.body.email,req.body.password)
-    res.redirect('/gallery')
+    res.redirect('/login')
     }catch(err){
         res.render('register',{error: err.message})
     } 
+})
+app.get('/forgot',(req,res)=>{
+          res.render('./registration/forgot')
+})
+app.post('/forgot',(req,res)=>{
+    try{
+        firebaseApp.sendResetEmail(req.body.email)
+        res.redirect('/login')
+        }catch(err){
+            res.redirect('/forgot')
+        } 
 })
 
 app.get('/about',(req,res)=>{
