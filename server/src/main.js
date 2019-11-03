@@ -4,11 +4,24 @@ const firebaseApp=require('./app')
 const bodyParser= require('body-parser')
 const multer=require('multer')
 const app = express()
-const storage=multer.diskStorage({
-    destination: '../user_data/',
-}
-)
-let upload = multer({ storage: storage })
+
+   
+let upload1 = multer({ storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, path.resolve(__dirname,'../user_data/userImages'))
+    },
+    filename: function (req, file, cb) {
+      cb(null, 'profile.png')
+    }
+  }) })
+let upload2 = multer({ storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, path.resolve(__dirname,'../user_data/imageCloud/'))
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname+'-'+Date.now())
+    }
+  }) })
 app.set('title','My Gallery')
 app.set('view engine','hbs')
 app.set('views',path.join(__dirname,"../views"))
@@ -33,16 +46,17 @@ app.post('/login',(req,res)=>{
 app.get('/register',(req,res)=>{
     res.render('registration/register')    
 })
-app.post('/register',(req,res)=>{
+app.post('/register',upload.single("profilePic"),(req,res)=>{
     try{
+    let file=req.file
     //firebaseApp.registerUser(req.body.firstname,req.body.lastname,req.body.username,req.body.email,req.body.password)
     /*upload= multer({
         dest: '../user_data/'+req.body.username
       })*/
-      console.log(req.file)
-    res.redirect('/login')
+      res.send(file)
+   // res.redirect('/login')
     }catch(err){
-        res.render('register',{error: err.message})
+       console.error(err)
     } 
 })
 app.get('/forgot',(req,res)=>{
@@ -73,6 +87,6 @@ app.get('/gallery',(req,res)=>{
      })
 })
 
-/*app.listen(8080,()=>{
+app.listen(8080,()=>{
     console.log("Server is running on port: 8080")
-}) */
+}) 
