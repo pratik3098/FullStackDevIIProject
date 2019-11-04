@@ -4,11 +4,10 @@ const firebaseApp=require('./app')
 const bodyParser= require('body-parser')
 const multer=require('multer')
 const app = express()
-
-   
+const fs=require('fs')
 let upload1 = multer({ storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, path.resolve(__dirname,'../user_data/userImages'))
+      cb(null, path.resolve(__dirname,'../user_data/userImages/'))
     },
     filename: function (req, file, cb) {
       cb(null, 'profile.png')
@@ -46,15 +45,13 @@ app.post('/login',(req,res)=>{
 app.get('/register',(req,res)=>{
     res.render('registration/register')    
 })
-app.post('/register',upload.single("profilePic"),(req,res)=>{
+app.post('/register',upload1.single("profilePic"),(req,res)=>{
     try{
-    let file=req.file
-    //firebaseApp.registerUser(req.body.firstname,req.body.lastname,req.body.username,req.body.email,req.body.password)
-    /*upload= multer({
-        dest: '../user_data/'+req.body.username
-      })*/
-      res.send(file)
-   // res.redirect('/login')
+    firebaseApp.registerUser(req.body.firstname,req.body.lastname,req.body.username,req.body.email,req.body.password)
+    firebaseApp.uploadUserProfilePic(req.body.username,'profile.png')
+    //fs.unlink(path.resolve(__dirname,'../user_data/profile.png'))
+    res.redirect('/login')
+   res.send(req.file)
     }catch(err){
        console.error(err)
     } 

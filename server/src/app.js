@@ -1,5 +1,6 @@
 const path=require('path')
 const admin=require('firebase-admin')
+const firebase=require('firebase')
 admin.initializeApp({
   credential: admin.credential.cert(path.resolve(__dirname,'../../../serviceKey.json')),
   databaseURL: 'https://fullstackdeviiproject-f8413.firebaseio.com',
@@ -47,5 +48,8 @@ exports.signInUser=function signInUser(email,password){
 exports.sendResetEmail=function sendResetEmail(email){
      auth.sendResetEmail(email)
 }
-//this.registerUser("pratik","patil","pratik3099","pratik3099@gmail.com","12345dddd6")
-//this.sendResetEmail("pratik3098")
+exports.uploadUserProfilePic=function uploadUserProfilePic(username, filename){
+     storage.adduserProfilePic(username, filename).catch(err=>{
+       console.log(err)
+     })
+}
