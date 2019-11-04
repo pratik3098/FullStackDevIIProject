@@ -1,0 +1,52 @@
+body{
+  margin: 20px;
+  padding: 0;
+  background:#333;
+}
+
+.containerr{
+  margin: auto;
+  border: #fff solid 3px;
+  background: #fff;
+ 
+  
+}
+
+.main-imgg img,
+.imgss img {
+ width: 100%;
+ 
+}
+
+.imgss {
+ display: grid;
+ grid-template-columns: repeat(4, 1fr);
+ grid-gap: 5px;
+ margin-top: 3px;;
+}
+
+@keyframes fadeIn {
+    to{
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in 1 forwards;
+}
+
+h3, h4, h1{
+  color: white;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+input{
+  max-width: 300px;
+}
+.btn-w{
+  width: 300px;
+}
+
+
+
+
