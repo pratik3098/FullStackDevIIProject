@@ -4,7 +4,12 @@ const gcs= new Storage({
     projectId: 'fullstackdeviiproject-f8413',
     keyFilename: '../../../serviceKey.json'
 }).bucket('gs://fullstackdeviiproject-f8413.appspot.com')
-
+/*const firebase=require('firebase') 
+firebase.initializeApp({
+    apiKey: "AIzaSyDzZ3EvtGsdX8yGpv7ySn0w2OS2Ov5-JuU",
+    storageBucket: "fullstackdeviiproject-f8413.appspot.com",
+    projectId: "fullstackdeviiproject-f8413",
+})*/
 const default_imageCloud= 'imageCloud'
 const default_userImg='userImages'
 
@@ -104,3 +109,10 @@ exports.getImageCount=async function getImageCount(username){
   let files= await this.getImageList(username)
   return files.length
 } 
+exports.getAllImageFiles=async function getAllImageFiles(userName){
+// const storage = firebase.storage()
+ //let ref= storage.ref(`${default_imageCloud}/${userName}`)
+}
+
+
+this.getAllImageFiles("pratik3098").catch(err=>{console.error(err)})

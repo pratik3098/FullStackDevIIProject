@@ -33,7 +33,7 @@ app.get('',(req,res)=>{
 app.get('/login',(req,res)=>{
     res.render('registration/login')
 })
-app.about('/about',(req,res)=>{
+app.get('/about',(req,res)=>{
     res.render('about/index')
 })
 app.post('/login',(req,res)=>{
