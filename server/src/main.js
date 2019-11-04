@@ -33,6 +33,9 @@ app.get('',(req,res)=>{
 app.get('/login',(req,res)=>{
     res.render('registration/login')
 })
+app.about('/about',(req,res)=>{
+    res.render('about/index')
+})
 app.post('/login',(req,res)=>{
     try{
     firebaseApp.signInUser(req.body.email,req.body.password)
