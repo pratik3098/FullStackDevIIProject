@@ -3,8 +3,8 @@ const admin=require('firebase-admin')
 const firebase=require('firebase')
 admin.initializeApp({
   credential: admin.credential.cert(path.resolve(__dirname,'../serviceKey.json')),
-  databaseURL: 'https://fullstackdeviiproject-f8413.firebaseio.com',
-  authDomain: 'fullstackdeviiproject-f8413.web.app'
+  databaseURL: '',
+  authDomain: ''
 })
 const auth=require('./authentication')
 const storage=require('./storage')

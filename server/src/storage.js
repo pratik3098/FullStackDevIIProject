@@ -1,9 +1,9 @@
 const {Storage}=require('@google-cloud/storage')
 const path=require('path')
 const gcs= new Storage({
-    projectId: 'fullstackdeviiproject-f8413',
+    projectId: '',
     keyFilename: '../serviceKey.json'
-}).bucket('gs://fullstackdeviiproject-f8413.appspot.com')
+}).bucket('')
 
 const default_imageCloud= 'imageCloud'
 const default_userImg='userImages'

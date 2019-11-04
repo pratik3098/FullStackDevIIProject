@@ -1,14 +1,14 @@
 const admin=require('firebase-admin')
 const firebase=require('firebase')
 firebase.initializeApp({
-    apiKey: "AIzaSyDzZ3EvtGsdX8yGpv7ySn0w2OS2Ov5-JuU",
-    authDomain: "fullstackdeviiproject-f8413.firebaseapp.com",
-    projectId: "fullstackdeviiproject-f8413",
+    apiKey: "",
+    authDomain: "",
+    projectId: "",
 }) 
 /* 
 admin.initializeApp({
     credential: admin.credential.cert(path.resolve(__dirname,'../serviceKey.json')),
-    authDomain: 'fullstackdeviiproject-f8413.web.app'
+    authDomain: '.web.app'
 })
 */
 const auth=admin.auth()

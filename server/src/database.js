@@ -2,7 +2,7 @@ const admin = require('firebase-admin')
 const path=require('path')
 /*admin.initializeApp({
     credential: admin.credential.cert(path.resolve(__dirname,'../serviceKey.json')),
-    databaseURL: 'https://fullstackdeviiproject-f8413.firebaseio.com'
+    databaseURL: 'https://.firebaseio.com'
 }) */
 const firestore=admin.firestore()
 
