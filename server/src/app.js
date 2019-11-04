@@ -2,7 +2,7 @@ const path=require('path')
 const admin=require('firebase-admin')
 const firebase=require('firebase')
 admin.initializeApp({
-  credential: admin.credential.cert(path.resolve(__dirname,'../../../serviceKey.json')),
+  credential: admin.credential.cert(path.resolve(__dirname,'../serviceKey.json')),
   databaseURL: 'https://fullstackdeviiproject-f8413.firebaseio.com',
   authDomain: 'fullstackdeviiproject-f8413.web.app'
 })
@@ -19,9 +19,7 @@ exports.registerUser=function registerUser(firstName,lastName,userName,email,pas
      userName=userName.toLowerCase()
    else
      userName=email.split("@")[0]
-  auth.emailSignUp(userName,email,password).catch(err=>{
-    console.error(err.message)
-  })
+  auth.emailSignUp(userName,email,password)
 }catch(err){
   console.error('Error: Signing up user')
 }
@@ -49,7 +47,10 @@ exports.sendResetEmail=function sendResetEmail(email){
      auth.sendResetEmail(email)
 }
 exports.uploadUserProfilePic=function uploadUserProfilePic(username, filename){
-     storage.adduserProfilePic(username, filename).catch(err=>{
-       console.log(err)
-     })
+   try{
+     storage.adduserProfilePic(username, filename)
+   }
+   catch(err){
+     console.error(err)
+   }
 }

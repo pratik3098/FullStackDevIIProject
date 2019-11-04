@@ -30,18 +30,20 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.get('',(req,res)=>{
     res.redirect('/login')    
 })
+app.get('/about',(req,res)=>{
+  res.render('about/index')
+})
 app.get('/login',(req,res)=>{
     res.render('registration/login')
 })
-app.get('/about',(req,res)=>{
-    res.render('about/index')
-})
+
 app.post('/login',(req,res)=>{
     try{
     firebaseApp.signInUser(req.body.email,req.body.password)
+    console.log("sign-in Successful")
     res.redirect('/gallery')
     }catch(err){
-        res.render('register',{error: err.message})
+        res.redirect('/forgot')
     } 
 })
 
@@ -74,17 +76,20 @@ app.post('/forgot',(req,res)=>{
 app.get('/about',(req,res)=>{
     res.render('about')
 })
-
 app.get('/gallery',(req,res)=>{
-    res.render('gallery/gallery',
-    { firstname: 'Mike',
-      lastname: 'Snow',
-      username: 'mikey455',
-      //userimg: '',
-      email: 'abcd@gmail.com', 
-      imgcount: '10',
-      userSince: '01/13/2019'
-     })
+  res.render('gallery/gallery')
+})
+app.post('/upload2',upload2.single("pic"),(req,res)=>{
+
+    res.redirect('/gallery')
+})
+app.post('/upload2',(req,res)=>{
+  try{
+  firebaseApp.signInUser(req.body.email,req.body.password)
+  res.redirect('/gallery')
+  }catch(err){
+      res.render('register',{error: err.message})
+  } 
 })
 
 app.listen(8080,()=>{

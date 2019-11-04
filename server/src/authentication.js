@@ -1,15 +1,16 @@
 const admin=require('firebase-admin')
 const firebase=require('firebase')
-const path=require('path')
 firebase.initializeApp({
     apiKey: "AIzaSyDzZ3EvtGsdX8yGpv7ySn0w2OS2Ov5-JuU",
     authDomain: "fullstackdeviiproject-f8413.firebaseapp.com",
     projectId: "fullstackdeviiproject-f8413",
-})  
-/*admin.initializeApp({
-    credential: admin.credential.cert(path.resolve(__dirname,'../../../serviceKey.json')),
+}) 
+/* 
+admin.initializeApp({
+    credential: admin.credential.cert(path.resolve(__dirname,'../serviceKey.json')),
     authDomain: 'fullstackdeviiproject-f8413.web.app'
-})*/
+})
+*/
 const auth=admin.auth()
 const client=firebase.auth()
 
@@ -31,13 +32,13 @@ exports.emailSignUp=function emailSignUp(userName,emailId,password){
       console.log("User "+ userName+" added")
   }).catch(err=>{
       console.error(err.message)
-      throw err.message
      
   })
 }
 exports.emailSignIn=function emailSignIn(email,password){
     Promise.resolve(client.signInWithEmailAndPassword(email, password)).then(res=>{
-        console.log(email+ " sign-up successful")
+        console.log(email+ " sign-in successful")
+        console.log(res)
     }).catch(err=>{console.error("error: "+error.code+" "+err.message)})
 }
 
